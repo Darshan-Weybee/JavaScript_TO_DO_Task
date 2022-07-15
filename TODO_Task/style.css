@@ -1,0 +1,234 @@
+:root{
+    --blue: #046efa;
+}
+.container {
+    width: 100%;
+    text-align: center;
+}
+
+.inputbox {
+    width: 100%;
+    margin-top: 1.5em;
+    line-height: 1.8em;
+    border: 2px solid #8e8b8be0;
+    border-radius: 0.4em;
+    padding: 0.5em;
+}
+.inputbox:focus{
+    box-shadow: 1px 1px 8px 1px var(--blue);
+    border: none;
+    outline: none;
+}
+
+.hidden{
+    display: none;
+}
+
+.data{
+    text-align: left;
+    margin: 1em 0 0 1em;
+    font-size: 1.3em;
+    color: #93939a;
+}
+
+.addbtn {
+
+    border: 2px solid #8e8b8be0;
+    border-radius: 0.4em;
+}
+
+.add {
+    width: 0.9em;
+    height: 0.8em;
+}
+
+.searchbtn {
+
+    border: 2px solid #8e8b8be0;
+    border-radius: 0.4em;
+}
+
+.search {
+    width: 1em;
+    height: 1em;
+}
+
+.verticalline {
+    font-size: 2em;
+    font-weight: bold;
+    align-items: center;
+}
+
+.rightdata button{
+    border: none;
+    font-size: 0.85em;
+}
+.action {
+    border: 2px solid #8e8b8be0;
+    padding: 0.1em;
+    width: 23%;
+    border-radius: 0.4em;
+}
+
+.sort {
+    border: 2px solid #8e8b8be0;
+    padding: 0.1em;
+    width: 20%;
+    border-radius: 0.4em;
+}
+
+.buttons {
+    margin: 2em 0 0 0;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around;
+}
+
+.state {
+    display: flex;
+    /* border: 2px solid #8e8b8be0; */
+    border-radius: 0.4em;
+    margin: 1.3em 0 0 0;
+    /* padding: 0.3em; */
+    background-color: none;
+}
+
+.state button {
+    border: none;
+    letter-spacing: 0.05em;
+}
+
+.state  .allbtn{
+    border-radius: 0.4em 0 0 0.4em;
+    border-right: 2px solid #38687f;
+}
+
+.state  .activebtn{
+    border-right: 2px solid #38687f;
+}
+
+.state  .completedbtn{
+    border-radius: 0 0.4em 0.4em 0;
+    border-right: 2px solid #38687f;
+}
+
+.default{
+    background-color: var(--blue);
+}
+
+.active{
+    background-color: none;
+    box-shadow: 1px 1px 10px 1px var(--blue);
+}
+
+.inputList{
+    display: flex;
+    justify-content: space-between;
+    color: black;
+    margin: 0.8em;
+}
+
+.inputList .rightdata .fa-solid{
+    margin: 0 1.5em 0 0;
+}
+
+.inputList .rightdata{
+    margin: 0 1.5em 0 0;
+}
+
+@media only screen and (min-width: 420px) {
+    .container {
+        width: 100%;
+    }
+
+    .inputbox {
+        margin-top: 1.5em 0 0 0;
+        line-height: 1.8em;
+        border: 2px solid #8e8b8be0;
+        border-radius: 0.4em;
+    }
+
+    .addbtn {
+
+        border: 2px solid #8e8b8be0;
+        border-radius: 0.4em;
+        height: 3em;
+        width: 2em;
+    }
+
+    .searchbtn {
+
+        border: 2px solid #8e8b8be0;
+        border-radius: 0.4em;
+        height: 3em;
+        width: 2.5em;
+    }
+
+    .verticalline {
+        font-size: 2em;
+        font-weight: bold;
+        align-items: center;
+    }
+
+    .action {
+        border: 2px solid #8e8b8be0;
+        padding: 0.1em;
+        width: 23%;
+        border-radius: 0.4em;
+    }
+
+    .sort {
+        border: 2px solid #8e8b8be0;
+        padding: 0.1em;
+        width: 20%;
+        border-radius: 0.4em;
+    }
+
+    .buttons {
+        margin: 2em 0 0 0;
+        display: flex;
+        flex-wrap: wrap;
+    }
+
+    .state {
+        display: flex;
+        /* border: 2px solid #8e8b8be0; */
+        border-radius: 0.4em;
+        margin: 0;
+        /* padding: 0.3em; */
+    }
+
+    .state button {
+        border: none;
+
+    }
+}
+
+@media only screen and (min-width: 800px){
+    .container{
+        width: 80%;
+        margin: auto;
+        text-align: center;
+    }
+}
+@media only screen and (min-width: 1080px){
+    .container{
+        width: 70%;
+        margin: auto;
+        text-align: center;
+    }
+}
+@media only screen and (min-width: 1560px){
+    .container{
+        width: 60%;
+        margin: auto;
+        text-align: center;
+    }
+}
+@media only screen and (min-width: 1860px){
+    .container{
+        width: 50%;
+        margin: auto;
+        text-align: center;
+    }
+}
