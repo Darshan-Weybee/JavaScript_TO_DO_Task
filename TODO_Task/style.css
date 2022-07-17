@@ -62,6 +62,7 @@
 .rightdata button{
     border: none;
     font-size: 0.85em;
+    background: none;
 }
 .action {
     border: 2px solid #8e8b8be0;

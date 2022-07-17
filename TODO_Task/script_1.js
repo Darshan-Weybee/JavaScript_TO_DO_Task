@@ -32,19 +32,15 @@ addbtn.addEventListener("click", function (e) {
         inputText.focus();
 
         inputText.addEventListener("keydown", addText);
-        inputText.removeEventListener("input", searchText);
+        inputText.removeEventListener("input", search);
 
-
-        // e.target.closest(".fa-pen-to-square");
-        // editBtn.addEventListener("click", function(e){
-        //     document.querySelector(".newData").classList.add("hidden");
-
-        // });
     }
 });
 function addText(eve) {
-    // if (inputText.value == " " || inputText.value == "") {
-        let html = data(`${inputText.value}`);
+    console.log(inputText.value);
+    console.log({ addFlag, searchFlag });
+    if (inputText.value != " " || inputText.value != "" && addFlag) {
+        let html = data(`${inputText.value.trim()}`);
         // console.log({ addFlag, searchFlag });
         if (eve.key == "Enter" && addFlag) {
             addData.insertAdjacentHTML("afterbegin", html);
@@ -55,34 +51,34 @@ function addText(eve) {
             inputText.value = "";
 
             // =====================================ALL =========
-            spanAr = document.querySelectorAll(".newData");
-            let elementId = document.querySelectorAll(`input[name="cb"]`);
-            console.log({ elementId });
-            for (let ele of elementId) {
-                console.log("for");
-                ele.addEventListener("change", function () {
-                    console.log("for");
-                    if (ele.checked) {
-                        let index = ele.id.slice(-1);
-                        document.querySelector(`#main--${index}`).style.display = "none";
-                        let value = document.querySelector(`#newData--${index}`).textContent;
-                        completedTask.push(value);
-                        console.log({ completedTask });
-                        addData.innerHTML = "";
-                        i = 0;
-                        for (let word of inputValue) {
-                            let html = data(word);
-                            addData.insertAdjacentHTML("afterbegin", html);
-                            setId(i);
-                            if (completedTask.includes(word))
-                                document.querySelector(`#check--${i}`).checked = true;
-                            i++;
-                        }
-                    }
-                });
-            }
+            // spanAr = document.querySelectorAll(".newData");
+            // let elementId = document.querySelectorAll(`input[name="cb"]`);
+            // console.log({ elementId });
+            // for (let ele of elementId) {
+            //     console.log("for");
+            //     ele.addEventListener("change", function () {
+            //         console.log("for");
+            //         if (ele.checked) {
+            //             let index = ele.id.slice(-1);
+            //             document.querySelector(`#main--${index}`).style.display = "none";
+            //             let value = document.querySelector(`#newData--${index}`).textContent;
+            //             completedTask.push(value);
+            //             console.log({ completedTask });
+            //             addData.innerHTML = "";
+            //             i = 0;
+            //             for (let word of inputValue) {
+            //                 let html = data(word);
+            //                 addData.insertAdjacentHTML("afterbegin", html);
+            //                 setId(i);
+            //                 if (completedTask.includes(word))
+            //                     document.querySelector(`#check--${i}`).checked = true;
+            //                 i++;
+            //             }
+            //         }
+            //     });
+            // }
         }
-    // }
+    }
 }
 
 function editfun(id) {
@@ -102,8 +98,15 @@ function editfun(id) {
             document.querySelector(`#edit--${id}`).classList.toggle("hidden");
             document.querySelector(`#close--${id}`).classList.toggle("hidden");
 
-            let inx = inputValue.indexOf(document.querySelector(`#newData--${id}`).textContent);
-            inputValue[inx] = document.querySelector(`#newDataInput--${id}`).value;
+            let inxInput = inputValue.indexOf(document.querySelector(`#newData--${id}`).textContent);
+            inputValue[inxInput] = document.querySelector(`#newDataInput--${id}`).value;
+
+            let inxActive = activeTask.indexOf(document.querySelector(`#newData--${id}`).textContent);
+            activeTask[inxActive] = document.querySelector(`#newDataInput--${id}`).value;
+
+            let inxCompleted = completedTask.indexOf(document.querySelector(`#newData--${id}`).textContent);
+            completedTask[inxCompleted] = document.querySelector(`#newDataInput--${id}`).value;
+
             document.querySelector(`#newData--${id}`).textContent = document.querySelector(`#newDataInput--${id}`).value;
         }
     });
@@ -166,23 +169,91 @@ searchbtn.addEventListener("click", function (e) {
     if (searchFlag) {
         console.log({ addFlag, searchFlag });
         inputText.focus();
-        inputText.addEventListener("input", searchText);
+        inputText.removeEventListener("keydown", addText);
+        inputText.addEventListener("input", search);
+    //         addData.innerHTML = "";
+    //         let searchText = e.target.value;
+    //        
+    //     });
     }
 
 });
 
-function searchText(e) {
+function search(e){
     addData.innerHTML = "";
     let searchText = e.target.value;
-    for (let word of inputValue) {
-        if (word.includes(searchText) && searchFlag && !addFlag) {
-            let search = `${data(word)}`;
-            addData.insertAdjacentHTML("afterbegin", search);
-            setId(i);
+
+    if(allBtnFlag){
+        console.log({inputValue});
+        for (let word of inputValue) {
+            console.log(word);
+            if (word.includes(searchText) && searchFlag) {
+                let search = `${data(word)}`;
+                addData.insertAdjacentHTML("afterbegin", search);
+                setId(i);
+                if (completedTask.includes(word)){
+                     document.querySelector(`#check--${i}`).checked = true;
+                }
+                // document.querySelector(`#check--${i}`).addEventListener("change", btnChecked(`check--${i}`));
+            }
+        }
+        if (addData.innerHTML == "") {
+            addData.insertAdjacentHTML("afterbegin", "No Data Found");
         }
     }
-    if (addData.innerHTML == "") {
-        addData.insertAdjacentHTML("afterbegin", "No Data Found");
+    else if(activeBtnFlag){
+        console.log({activeTask});
+        for (let word of activeTask) {
+            console.log(word);
+            if (word.includes(searchText) && searchFlag) {
+                let search = `${data(word)}`;
+                addData.insertAdjacentHTML("afterbegin", search);
+                setId(i);
+                if (completedTask.includes(word)){
+                     document.querySelector(`#check--${i}`).checked = true;
+                }
+                // document.querySelector(`#check--${i}`).addEventListener("change", btnChecked(`check--${i}`));
+            }
+        }
+        if (addData.innerHTML == "") {
+            addData.insertAdjacentHTML("afterbegin", "No Data Found");
+        }
+    }
+    else if(completedBtnFlag){
+        console.log({completedTask});
+        for (let word of completedTask) {
+            console.log(word);
+            if (word.includes(searchText) && searchFlag) {
+                let search = `${data(word)}`;
+                addData.insertAdjacentHTML("afterbegin", search);
+                setId(i);
+                if (completedTask.includes(word)){
+                     document.querySelector(`#check--${i}`).checked = true;
+                }
+                // document.querySelector(`#check--${i}`).addEventListener("change", btnChecked(`check--${i}`));
+            }
+        }
+        if (addData.innerHTML == "") {
+            addData.insertAdjacentHTML("afterbegin", "No Data Found");
+        }
+    }
+    else{
+        console.log({inputValue});
+                for (let word of inputValue) {
+                    console.log(word);
+                    if (word.includes(searchText) && searchFlag) {
+                        let search = `${data(word)}`;
+                        addData.insertAdjacentHTML("afterbegin", search);
+                        setId(i);
+                        if (completedTask.includes(word)){
+                            document.querySelector(`#check--${i}`).checked = true;
+                        }
+                        // document.querySelector(`#check--${i}`).addEventListener("change", btnChecked(`check--${i}`));
+                    }
+                }
+                if (addData.innerHTML == "") {
+                    addData.insertAdjacentHTML("afterbegin", "No Data Found");
+                }
     }
 }
 // ============================================================
@@ -204,7 +275,9 @@ dropDownAction.addEventListener("click", function (e) {
                 let value = document.querySelector(`#newData--${index}`).textContent;
                 inputValue = inputValue.filter(ele => ele != value);
                 console.log(inputValue);
-                document.querySelector(`.action`).options[0].selected = true;
+                completedTask = completedTask.filter(ele => ele != value);
+                activeTask = activeTask.filter(ele => ele != value);
+                // document.querySelector(`.action`).options[0].selected = true;
 
             }
         }
@@ -212,20 +285,32 @@ dropDownAction.addEventListener("click", function (e) {
     }
     else if (dropDownValue == "SelectAll") {
         // let inputValueCopy = inputValue.slice();
-        for (let word of inputValue) {
-            console.log(inputValue);
-            let elementIndex = findIndex(word);
-            console.log(elementIndex);
-            console.log(document.querySelector(`#check--${elementIndex}`));
-            document.querySelector(`#check--${elementIndex}`).checked = true;
+        if(allBtnFlag || addFlag){console.log("selectifall"); selectall(inputValue);}
+        else if(activeBtnFlag){ console.log("selectifactive"); selectall(activeTask);}
+        function selectall(selectData){
+            for (let word of selectData) {
+                console.log(selectData);
+                console.log(word);
+                let elementIndex = findIndex(word);
+                console.log(elementIndex);
+                console.log(document.querySelector(`#check--${elementIndex}`));
+                document.querySelector(`#check--${elementIndex}`).checked = true;
+                document.querySelector(`#check--${elementIndex}`).addEventListener("change", btnChecked(`check--${elementIndex}`));
+            }
+
         }
         e.preventDefault();
     }
     else if (dropDownValue == "UnselectAll") {
         // let inputValueCopy = inputValue.slice();
-        for (let word of inputValue) {
-            let elementIndex = findIndex(word);
-            document.querySelector(`#check--${elementIndex}`).checked = false;
+        if(allBtnFlag || addFlag){unselectall(inputValue);}
+        else if(completedBtnFlag){unselectall(completedTask);}
+        function unselectall(unselectData){
+            for (let word of inputValue) {
+                let elementIndex = findIndex(word);
+                document.querySelector(`#check--${elementIndex}`).checked = false;
+                document.querySelector(`#check--${elementIndex}`).addEventListener("change", btnChecked(`check--${elementIndex}`));
+            }
         }
         e.preventDefault();
     }
@@ -233,71 +318,150 @@ dropDownAction.addEventListener("click", function (e) {
 
 // ============================================================
 //  ========  ALL  ==================================
-allbtn.addEventListener("click", function () {
-    threebtn(allbtn, completedbtn, activebtn);
+let allBtnFlag = false;
+let activeBtnFlag = false;
+let completedBtnFlag = false;
+
+function displayDataAfterBtn(wordArray){
     addData.innerHTML = "";
     i = 0;
-    console.log({inputValue});
-    for (let word of inputValue) {
+    console.log({wordArray});
+    for (let word of wordArray) {
         console.log({word});
         let html = data(word);
         console.log({html});
         addData.insertAdjacentHTML("afterbegin", html);
         setId(i);
-        if (completedTask.includes(word))
+        if (completedTask.includes(word) && !activeBtnFlag)
                 document.querySelector(`#check--${i}`).checked = true;
         i++;
     }
+}
 
-    let elementId = document.querySelectorAll(`input[name="cb"]`);
-    console.log(elementId);
-    for (let ele of elementId) {
+function btnChecked(id){
+    // let elementId = document.querySelectorAll(`input[name="cb"]`);
+    // console.log(elementId);
+    // for (let ele of elementId) {
 
-        ele.addEventListener("change", function () {
+        // ele.addEventListener("change", function () {
             console.log("for");
+            console.log(id);
+            let ele = document.querySelector( `#${id}`);
+
             if (ele.checked) {
                 let index = ele.id.slice(-1);
-                document.querySelector(`#main--${index}`).style.display = "none";
+                // document.querySelector(`#main--${index}`).style.display = "none";
                 let value = document.querySelector(`#newData--${index}`).textContent;
-                completedTask.push(value);
-                console.log({ completedTask });
-                // activeTask = inputValue.filter(ele => !completedTask.includes(ele));
-                // console.log({activeTask});
-                addData.innerHTML = "";
-                i = 0;
-                for (let word of inputValue) {
-                    let html = data(word);
-                    addData.insertAdjacentHTML("afterbegin", html);
-                    setId(i);
-                    if(completedTask.includes(word))
-                            document.querySelector(`#check--${i}`).checked = true;
-                    i++;
+
+                if(allBtnFlag || addFlag || searchFlag){
+                    completedTask.push(value);
+                    console.log({ completedTask });
+                    displayDataAfterBtn(inputValue);
+                    // addData.innerHTML = "";
+                    // i = 0;
+                    // for (let word of inputValue) {
+                    //     let html = data(word);
+                    //     addData.insertAdjacentHTML("afterbegin", html);
+                    //     setId(i);
+                    //     if(completedTask.includes(word))
+                    //             document.querySelector(`#check--${i}`).checked = true;
+                    //     i++;
+                    // }
                 }
+                else if(activeBtnFlag || searchFlag){
+                    completedTask.push(value);
+                    document.querySelector(`#main--${index}`).style.display = "none";
+                    activeTask = inputValue.filter(ele => !completedTask.includes(ele));
+                    console.log({ completedTask });
+                    displayDataAfterBtn(activeTask);
+                    // addData.innerHTML = "";
+                    // i = 0;
+                    // for (let word of activeTask) {
+                    //     let html = data(word);
+                    //     addData.insertAdjacentHTML("afterbegin", html);
+                    //     setId(i);
+                    //     i++;
+                    // }
+                }
+                // else if(completedBtnFlag){
+                // }
             }
             else{
                 let index = ele.id.slice(-1);
-                document.querySelector(`#main--${index}`).style.display = "none";
+                // document.querySelector(`#main--${index}`).style.display = "none";
                 let value = document.querySelector(`#newData--${index}`).textContent;
-                completedTask = completedTask.filter(ele => ele != value);
-                console.log({ completedTask });
-                addData.innerHTML = "";
-                i = 0;
-                for (let word of inputValue) {
-                    let html = data(word);
-                    addData.insertAdjacentHTML("afterbegin", html);
-                    setId(i);
-                    if(completedTask.includes(word))
-                            document.querySelector(`#check--${i}`).checked = true;
-                    i++;
+                
+                if(allBtnFlag || addFlag || searchFlag){
+                    completedTask = completedTask.filter(ele => ele != value);
+                    console.log({ completedTask });
+                    displayDataAfterBtn(inputValue);
+                    // addData.innerHTML = "";
+                    // i = 0;
+                    // for (let word of inputValue) {
+                    //     let html = data(word);
+                    //     addData.insertAdjacentHTML("afterbegin", html);
+                    //     setId(i);
+                    //     if(completedTask.includes(word))
+                    //             document.querySelector(`#check--${i}`).checked = true;
+                    //     i++;
+                    // }
+                }
+                // else if(activeBtnFlag){
+
+                // }
+                else if(completedBtnFlag || searchFlag){
+                    document.querySelector(`#main--${index}`).style.display = "none";
+                    completedTask = completedTask.filter(ele => ele != value);
+                    console.log({ completedTask });
+                    displayDataAfterBtn(completedTask);
+                    // addData.innerHTML = "";
+                    // i = 0;
+                    // for (let word of completedTask) {
+                    //     let html = data(word);
+                    //     addData.insertAdjacentHTML("afterbegin", html);
+                    //     setId(i);
+                    //     document.querySelector(`#check--${i}`).checked = true;
+                    //     i++;
+                    // }
                 }
             }
-        });
-    }
+        // });
+    // }
+    // if(allBtnFlag)
+    //     btnChecked();
+}
+allbtn.addEventListener("click", function () {
+    // inputText.removeEventListener("input", addText);
+
+    allBtnFlag = true;
+    addFlag = false;
+    activeBtnFlag = false;
+    completedBtnFlag = false;
+
+    threebtn(allbtn, completedbtn, activebtn);
+    displayDataAfterBtn(inputValue);
+    inputText.addEventListener("input", search);
+    // addData.innerHTML = "";
+    // i = 0;
+    // console.log({inputValue});
+    // for (let word of inputValue) {
+    //     console.log({word});
+    //     let html = data(word);
+    //     console.log({html});
+    //     addData.insertAdjacentHTML("afterbegin", html);
+    //     setId(i);
+    //     if (completedTask.includes(word))
+    //             document.querySelector(`#check--${i}`).checked = true;
+    //     i++;
+    // }
+    // btnChecked();
+
+
 });
 function findIndex(word) {
     // for(let word of inputValue){
     let mainIndex;
-    // let spanAr = document.querySelectorAll(".newData");
+    let spanAr = document.querySelectorAll(".newData");
     console.log({ spanAr });
     for (let span of spanAr) {
         let middle = span.id.slice(-1);
@@ -340,76 +504,94 @@ function findIndex(word) {
 //     // addData.innerHTML = "";
 // }
 activebtn.addEventListener("click", function () {
+    // inputText.removeEventListener("input", addText);
+
+    allBtnFlag = false;
+    addFlag = false;
+    activeBtnFlag = true;
+    completedBtnFlag = false;
+
     threebtn(activebtn, completedbtn, allbtn);
     activeTask = inputValue.filter(ele => !completedTask.includes(ele));
     console.log({ activeTask });
-    addData.innerHTML = "";
-    i = 0;
-    for (let word of activeTask) {
-        let html = data(word);
-        addData.insertAdjacentHTML("afterbegin", html);
-        setId(i);
-        i++;
-    }
-    let elementId = document.querySelectorAll(`input[name="cb"]`);
-    for (let ele of elementId) {
-        console.log("for");
-        ele.addEventListener("change", function () {
-            console.log("for");
-            if (ele.checked) {
-                let index = ele.id.slice(-1);
-                document.querySelector(`#main--${index}`).style.display = "none";
-                let value = document.querySelector(`#newData--${index}`).textContent;
-                completedTask.push(value);
-                activeTask = inputValue.filter(ele => !completedTask.includes(ele));
-                console.log({ completedTask });
-                addData.innerHTML = "";
-                i = 0;
-                for (let word of activeTask) {
-                    let html = data(word);
-                    addData.insertAdjacentHTML("afterbegin", html);
-                    setId(i);
-                    i++;
-                }
-            }
-        });
-    }
+    displayDataAfterBtn(activeTask);
+    inputText.addEventListener("input", search);
+    // addData.innerHTML = "";
+    // i = 0;
+    // for (let word of activeTask) {
+    //     let html = data(word);
+    //     addData.insertAdjacentHTML("afterbegin", html);
+    //     setId(i);
+    //     i++;
+    // }
+    // let elementId = document.querySelectorAll(`input[name="cb"]`);
+    // for (let ele of elementId) {
+    //     console.log("for");
+    //     ele.addEventListener("change", function () {
+    //         console.log("for");
+    //         if (ele.checked) {
+    //             let index = ele.id.slice(-1);
+    //             document.querySelector(`#main--${index}`).style.display = "none";
+    //             let value = document.querySelector(`#newData--${index}`).textContent;
+    //             completedTask.push(value);
+    //             activeTask = inputValue.filter(ele => !completedTask.includes(ele));
+    //             console.log({ completedTask });
+    //             addData.innerHTML = "";
+    //             i = 0;
+    //             for (let word of activeTask) {
+    //                 let html = data(word);
+    //                 addData.insertAdjacentHTML("afterbegin", html);
+    //                 setId(i);
+    //                 i++;
+    //             }
+    //         }
+    //     });
+    // }
 
 });
 completedbtn.addEventListener("click", function () {
+    // inputText.removeEventListener("input", addText);
+
+    allBtnFlag = false;
+    addFlag = false;
+    activeBtnFlag = false;
+    completedBtnFlag = true;
+
     threebtn(completedbtn, allbtn, activebtn);
-    addData.innerHTML = "";
-    i = 0;
-    for (let word of completedTask) {
-        let html = data(word);
-        addData.insertAdjacentHTML("afterbegin", html);
-        setId(i);
-        document.querySelector(`#check--${i}`).checked = true;
-        i++;
-    }
-    let elementId = document.querySelectorAll(`input[name="cb"]`);
-    for (let ele of elementId) {
-        console.log("for");
-        ele.addEventListener("change", function () {
-            console.log("for");
-            if (!ele.checked) {
-                let index = ele.id.slice(-1);
-                document.querySelector(`#main--${index}`).style.display = "none";
-                let value = document.querySelector(`#newData--${index}`).textContent;
-                completedTask = completedTask.filter(ele => ele != value);
-                console.log({ completedTask });
-                addData.innerHTML = "";
-                i = 0;
-                for (let word of completedTask) {
-                    let html = data(word);
-                    addData.insertAdjacentHTML("afterbegin", html);
-                    setId(i);
-                    document.querySelector(`#check--${i}`).checked = true;
-                    i++;
-                }
-            }
-        });
-    }
+    displayDataAfterBtn(completedTask);
+    inputText.addEventListener("input", search);
+    // addData.innerHTML = "";
+    // i = 0;
+    // for (let word of completedTask) {
+    //     let html = data(word);
+    //     addData.insertAdjacentHTML("afterbegin", html);
+    //     setId(i);
+    //     document.querySelector(`#check--${i}`).checked = true;
+    //     i++;
+    // }
+    // let elementId = document.querySelectorAll(`input[name="cb"]`);
+    // for (let ele of elementId) {
+    //     console.log("for");
+    //     ele.addEventListener("change", function () {
+    //         console.log("for");
+    //         if (!ele.checked) {
+    //             let index = ele.id.slice(-1);
+    //             document.querySelector(`#main--${index}`).style.display = "none";
+    //             let value = document.querySelector(`#newData--${index}`).textContent;
+    //             completedTask = completedTask.filter(ele => ele != value);
+    //             console.log({ completedTask });
+    //             addData.innerHTML = "";
+    //             i = 0;
+    //             for (let word of completedTask) {
+    //                 let html = data(word);
+    //                 addData.insertAdjacentHTML("afterbegin", html);
+    //                 setId(i);
+    //                 document.querySelector(`#check--${i}`).checked = true;
+    //                 i++;
+    //             }
+    //         }
+    //     });
+    // }
 
 });
 
@@ -432,7 +614,7 @@ function data(inputData) {
     let html = `<div class="main">
         <div class="inputList">   
         <div class="leftdata"> 
-            <input type="checkbox" value=${inputData} class="check-${i}" name="cb">
+            <input type="checkbox" value=${inputData} class="check-${i}" name="cb" onchange = "btnChecked(id)">
             <span class="newData">${inputData}</span>
             <input type="text" class="newDataInput hidden" value="">
         </div>
