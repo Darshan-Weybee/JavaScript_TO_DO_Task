@@ -151,6 +151,7 @@ dropDownSort.addEventListener("click", function (e) {
         if (allBtnFlag) { atoz(inputValue); }
         else if (activeBtnFlag) { atoz(activeTask); }
         else if (completedBtnFlag) { atoz(completedTask); }
+        else { atoz(inputValue); }
         function atoz(array) {
             i = 0;
             addData.innerHTML = "";
@@ -159,6 +160,8 @@ dropDownSort.addEventListener("click", function (e) {
                 let sort = `${data(word)}`;
                 addData.insertAdjacentHTML("beforeend", sort);
                 setId(i);
+                if (completedTask.includes(word) && !activeBtnFlag)
+                    document.querySelector(`#check--${i}`).checked = true;
                 i++;
             }
         }
@@ -168,6 +171,7 @@ dropDownSort.addEventListener("click", function (e) {
         if (allBtnFlag) { ztoa(inputValue); }
         else if (activeBtnFlag) { ztoa(activeTask); }
         else if (completedBtnFlag) { ztoa(completedTask); }
+        else { ztoa(inputValue); }
         function ztoa(array) {
             i = 0;
             addData.innerHTML = "";
@@ -176,6 +180,8 @@ dropDownSort.addEventListener("click", function (e) {
                 let sort = `${data(word)}`;
                 addData.insertAdjacentHTML("afterbegin", sort);
                 setId(i);
+                if (completedTask.includes(word) && !activeBtnFlag)
+                    document.querySelector(`#check--${i}`).checked = true;
                 i++;
             }
         }
@@ -185,6 +191,7 @@ dropDownSort.addEventListener("click", function (e) {
         if (allBtnFlag) { oldest(inputValue); }
         else if (activeBtnFlag) { oldest(activeTask); }
         else if (completedBtnFlag) { oldest(completedTask); }
+        else { oldest(inputValue); }
         function oldest(array) {
             i = 0;
             addData.innerHTML = "";
@@ -192,6 +199,8 @@ dropDownSort.addEventListener("click", function (e) {
                 let sort = `${data(word)}`;
                 addData.insertAdjacentHTML("beforeend", sort);
                 setId(i);
+                if (completedTask.includes(word) && !activeBtnFlag)
+                    document.querySelector(`#check--${i}`).checked = true;
                 i++;
             }
         }
@@ -201,6 +210,7 @@ dropDownSort.addEventListener("click", function (e) {
         if (allBtnFlag) { newest(inputValue); }
         else if (activeBtnFlag) { newest(activeTask); }
         else if (completedBtnFlag) { newest(completedTask); }
+        else { newest(inputValue); }
         function newest(array) {
             i = 0;
             addData.innerHTML = "";
@@ -208,6 +218,8 @@ dropDownSort.addEventListener("click", function (e) {
                 let sort = `${data(word)}`;
                 addData.insertAdjacentHTML("afterbegin", sort);
                 setId(i);
+                if (completedTask.includes(word) && !activeBtnFlag)
+                    document.querySelector(`#check--${i}`).checked = true;
                 i++;
             }
         }
@@ -222,6 +234,7 @@ searchbtn.addEventListener("click", function (e) {
     addFlag = false;
     searchFlag = true;
 
+    addData.innerHTML = "";
     activeCss(searchbtn);
     removeCss(addbtn);
     if (searchFlag) {
@@ -246,17 +259,13 @@ function search(e) {
         console.log({ inputValue });
         for (let word of inputValue) {
             console.log(word);
-            if (word.includes(searchText) && searchFlag) {
+            if (word == searchText && searchFlag) {
                 let search = `${data(word)}`;
                 addData.insertAdjacentHTML("afterbegin", search);
                 setId(i);
                 if (completedTask.includes(word)) {
                     document.querySelector(`#check--${i}`).checked = true;
                 }
-                // document.querySelector(`#edit--${i}`).addEventListener("click", function(e){
-                //     if(e.key == "Enter")
-                //         search();
-                // });
                 // document.querySelector(`#check--${i}`).addEventListener("change", btnChecked(`check--${i}`));
             }
             i++;
@@ -270,7 +279,7 @@ function search(e) {
         for (let word of activeTask) {
             i = 0;
             console.log(word);
-            if (word.includes(searchText) && searchFlag) {
+            if (word == searchText && searchFlag) {
                 let search = `${data(word)}`;
                 addData.insertAdjacentHTML("afterbegin", search);
                 setId(i);
@@ -290,7 +299,7 @@ function search(e) {
         for (let word of completedTask) {
             i = 0;
             console.log(word);
-            if (word.includes(searchText) && searchFlag) {
+            if (word == searchText && searchFlag) {
                 let search = `${data(word)}`;
                 addData.insertAdjacentHTML("afterbegin", search);
                 setId(i);
@@ -310,7 +319,7 @@ function search(e) {
         for (let word of inputValue) {
             i = 0;
             console.log(word);
-            if (word.includes(searchText) && searchFlag) {
+            if (word == searchText && searchFlag) {
                 let search = `${data(word)}`;
                 addData.insertAdjacentHTML("afterbegin", search);
                 setId(i);
@@ -353,62 +362,98 @@ dropDownAction.addEventListener("click", function (e) {
         e.target.value = "Actions";
     }
     else if (dropDownValue == "SelectAll") {
-        // let elementId = document.querySelectorAll(`input[name="cb"]`);
-        if (allBtnFlag) {
-            console.log("selectifall");
-            for (let word of inputValue) {
-                console.log(word);
-                let elementIndex = findIndex(word);
-                document.querySelector(`#check--${elementIndex}`).checked = true;
-                document.querySelector(`#check--${elementIndex}`).addEventListener("change", btnChecked(`check--${elementIndex}`));
-            }
+        let elementId = document.querySelectorAll(`input[name="cb"]`);
+        for(let ele of elementId){
+            let index = ele.id.split("--");
+            document.querySelector(`#check--${index[1]}`).checked = true;
+            document.querySelector(`#check--${index[1]}`).addEventListener("change", btnChecked(`check--${index[1]}`));
         }
-        else if (activeBtnFlag) {
-            console.log("selectifactive");
-            for (let word of inputValue) {
-                console.log(word);
-                let elementIndex = findIndex(word);
-                document.querySelector(`#check--${elementIndex}`).checked = true;
-                document.querySelector(`#check--${elementIndex}`).addEventListener("change", btnChecked(`check--${elementIndex}`));
-            }
-        }
-        // function selectall(selectData){
-        //     for (let word of selectData) {
+        // if (allBtnFlag) {
+        //     completedTask = [];
+        //     console.log("selectifall");
+        //     for (let word of inputValue) {
         //         console.log(word);
         //         let elementIndex = findIndex(word);
         //         document.querySelector(`#check--${elementIndex}`).checked = true;
         //         document.querySelector(`#check--${elementIndex}`).addEventListener("change", btnChecked(`check--${elementIndex}`));
         //     }
-
         // }
+        // else if (activeBtnFlag) {
+        //     completedTask = [];
+        //     console.log("selectifactive");
+        //     let activeSelectData = activeTask;
+        //     console.log(activeTask);
+        //     for (let word of activeSelectData) {
+        //         // debugger;
+        //         console.log(activeSelectData);
+        //         console.log(word);
+        //         let elementIndex = findIndex(word);
+        //         console.log(elementIndex);
+        //         document.querySelector(`#check--${elementIndex}`).checked = true;
+        //         document.querySelector(`#check--${elementIndex}`).addEventListener("change", btnChecked(`check--${elementIndex}`));
+        //     }
+        // }
+        // else if(!completedBtnFlag) {
+        //     completedTask = [];
+        //     console.log("selectifall");
+        //     for (let word of inputValue) {
+        //         console.log(word);
+        //         let elementIndex = findIndex(word);
+        //         document.querySelector(`#check--${elementIndex}`).checked = true;
+        //         document.querySelector(`#check--${elementIndex}`).addEventListener("change", btnChecked(`check--${elementIndex}`));
+        //     }
+        // }
+        // // function selectall(selectData){
+        // //     for (let word of selectData) {
+        // //         console.log(word);
+        // //         let elementIndex = findIndex(word);
+        // //         document.querySelector(`#check--${elementIndex}`).checked = true;
+        // //         document.querySelector(`#check--${elementIndex}`).addEventListener("change", btnChecked(`check--${elementIndex}`));
+        // //     }
+
+        // // }
         e.target.value = "Actions";
     }
     else if (dropDownValue == "UnselectAll") {
-        // let elementId = document.querySelectorAll(`input[name="cb"]`);
-        if (allBtnFlag) {
-            for (let word of inputValue) {
-                let elementIndex = findIndex(word);
-                document.querySelector(`#check--${elementIndex}`).checked = false;
-                // btnChecked(`check--${elementIndex}`);
-                document.querySelector(`#check--${elementIndex}`).addEventListener("change", btnChecked(`check--${elementIndex}`));
-            }
+        let elementId = document.querySelectorAll(`input[name="cb"]`);
+        for(let ele of elementId){
+            let index = ele.id.split("--");
+            document.querySelector(`#check--${index[1]}`).checked = false;
+            document.querySelector(`#check--${index[1]}`).addEventListener("change", btnChecked(`check--${index[1]}`));
         }
-        else if (completedBtnFlag) {
-            for (let word of inputValue) {
-                let elementIndex = findIndex(word);
-                document.querySelector(`#check--${elementIndex}`).checked = false;
-                // btnChecked(`check--${elementIndex}`);
-                document.querySelector(`#check--${elementIndex}`).addEventListener("change", btnChecked(`check--${elementIndex}`));
-            }
-        }
-        // function unselectall(){
-        //     for (let word of elementId) {
+        // if (allBtnFlag) {
+        //     for (let word of inputValue) {
         //         let elementIndex = findIndex(word);
         //         document.querySelector(`#check--${elementIndex}`).checked = false;
-        //         btnChecked(`check--${elementIndex}`);
-        //         // document.querySelector(`#check--${elementIndex}`).addEventListener("change", btnChecked(`check--${elementIndex}`));
+        //         // btnChecked(`check--${elementIndex}`);
+        //         document.querySelector(`#check--${elementIndex}`).addEventListener("change", btnChecked(`check--${elementIndex}`));
         //     }
         // }
+        // else if (completedBtnFlag) {
+        //     for (let word of inputValue) {
+        //         let elementIndex = findIndex(word);
+        //         document.querySelector(`#check--${elementIndex}`).checked = false;
+        //         // btnChecked(`check--${elementIndex}`);
+        //         document.querySelector(`#check--${elementIndex}`).addEventListener("change", btnChecked(`check--${elementIndex}`));
+        //     }
+        // }
+        // else if(!activeBtnFlag){
+        //         for (let word of inputValue) {
+        //             let elementIndex = findIndex(word);
+        //             document.querySelector(`#check--${elementIndex}`).checked = false;
+        //             // btnChecked(`check--${elementIndex}`);
+        //             document.querySelector(`#check--${elementIndex}`).addEventListener("change", btnChecked(`check--${elementIndex}`));
+        //         }
+        //     }
+        // // }
+        // // function unselectall(){
+        // //     for (let word of elementId) {
+        // //         let elementIndex = findIndex(word);
+        // //         document.querySelector(`#check--${elementIndex}`).checked = false;
+        // //         btnChecked(`check--${elementIndex}`);
+        // //         // document.querySelector(`#check--${elementIndex}`).addEventListener("change", btnChecked(`check--${elementIndex}`));
+        // //     }
+        // // }
         e.target.value = "Actions";
     }
 });
@@ -483,6 +528,21 @@ function btnChecked(id) {
             //     i++;
             // }
         }
+        else if(!completedBtnFlag) {
+            completedTask.push(value);
+            console.log({ completedTask });
+            displayDataAfterBtn(inputValue);
+            // addData.innerHTML = "";
+            // i = 0;
+            // for (let word of inputValue) {
+            //     let html = data(word);
+            //     addData.insertAdjacentHTML("afterbegin", html);
+            //     setId(i);
+            //     if(completedTask.includes(word))
+            //             document.querySelector(`#check--${i}`).checked = true;
+            //     i++;
+            // }
+        }
         // else if(completedBtnFlag){
         // }
     }
@@ -526,6 +586,22 @@ function btnChecked(id) {
             //     i++;
             // }
         }
+        else if(!activeBtnFlag) {
+            let deleteIndex = completedTask.indexOf(value);
+            completedTask.splice(deleteIndex, 1);
+            console.log({ completedTask });
+            displayDataAfterBtn(inputValue);
+            // addData.innerHTML = "";
+            // i = 0;
+            // for (let word of inputValue) {
+            //     let html = data(word);
+            //     addData.insertAdjacentHTML("afterbegin", html);
+            //     setId(i);
+            //     if(completedTask.includes(word))
+            //             document.querySelector(`#check--${i}`).checked = true;
+            //     i++;
+            // }
+        }
     }
     // });
     // }
@@ -562,6 +638,7 @@ allbtn.addEventListener("click", function () {
 });
 function findIndex(word) {
     // for(let word of inputValue){
+        // debugger;
     let mainIndex;
     let spanAr = document.querySelectorAll(".newData");
     let revSpanAr = [];
@@ -577,7 +654,7 @@ function findIndex(word) {
         let spanWord = document.querySelector(`#newData--${middle[1]}`).textContent;
         console.log({ spanWord });
         if (word == spanWord) {
-            console.log('GH')
+            console.log('GH');
             mainIndex = middle[1];
             console.log(mainIndex);
             break;
