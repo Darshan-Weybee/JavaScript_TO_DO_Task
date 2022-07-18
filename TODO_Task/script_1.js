@@ -34,6 +34,8 @@ addbtn.addEventListener("click", function (e) {
         inputText.addEventListener("keydown", addText);
         inputText.removeEventListener("input", search);
 
+        displayDataAfterBtn(inputValue);
+
     }
 });
 function addText(eve) {
@@ -353,7 +355,7 @@ function btnChecked(id){
                 // document.querySelector(`#main--${index}`).style.display = "none";
                 let value = document.querySelector(`#newData--${index}`).textContent;
 
-                if(allBtnFlag || addFlag || searchFlag){
+                if(allBtnFlag || addFlag){
                     completedTask.push(value);
                     console.log({ completedTask });
                     displayDataAfterBtn(inputValue);
@@ -368,7 +370,7 @@ function btnChecked(id){
                     //     i++;
                     // }
                 }
-                else if(activeBtnFlag || searchFlag){
+                else if(activeBtnFlag){
                     completedTask.push(value);
                     document.querySelector(`#main--${index}`).style.display = "none";
                     activeTask = inputValue.filter(ele => !completedTask.includes(ele));
@@ -391,7 +393,7 @@ function btnChecked(id){
                 // document.querySelector(`#main--${index}`).style.display = "none";
                 let value = document.querySelector(`#newData--${index}`).textContent;
                 
-                if(allBtnFlag || addFlag || searchFlag){
+                if(allBtnFlag || addFlag){
                     completedTask = completedTask.filter(ele => ele != value);
                     console.log({ completedTask });
                     displayDataAfterBtn(inputValue);
@@ -409,7 +411,7 @@ function btnChecked(id){
                 // else if(activeBtnFlag){
 
                 // }
-                else if(completedBtnFlag || searchFlag){
+                else if(completedBtnFlag){
                     document.querySelector(`#main--${index}`).style.display = "none";
                     completedTask = completedTask.filter(ele => ele != value);
                     console.log({ completedTask });
@@ -440,7 +442,7 @@ allbtn.addEventListener("click", function () {
 
     threebtn(allbtn, completedbtn, activebtn);
     displayDataAfterBtn(inputValue);
-    inputText.addEventListener("input", search);
+    // inputText.addEventListener("input", search);
     // addData.innerHTML = "";
     // i = 0;
     // console.log({inputValue});
@@ -515,7 +517,7 @@ activebtn.addEventListener("click", function () {
     activeTask = inputValue.filter(ele => !completedTask.includes(ele));
     console.log({ activeTask });
     displayDataAfterBtn(activeTask);
-    inputText.addEventListener("input", search);
+    // inputText.addEventListener("input", search);
     // addData.innerHTML = "";
     // i = 0;
     // for (let word of activeTask) {
@@ -559,7 +561,7 @@ completedbtn.addEventListener("click", function () {
 
     threebtn(completedbtn, allbtn, activebtn);
     displayDataAfterBtn(completedTask);
-    inputText.addEventListener("input", search);
+    // inputText.addEventListener("input", search);
     // addData.innerHTML = "";
     // i = 0;
     // for (let word of completedTask) {
