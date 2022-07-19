@@ -15,6 +15,7 @@ let editBtn;
 let i = 0;
 let addFlag = false;
 let searchFlag = false;
+let sortFlag = false;
 let elementId;
 let spanAr;
 
@@ -117,9 +118,12 @@ function editfun(id) {
                     console.log(newData);
                     console.log(inputText.value);
 
-                    if(inputText.value != String(newData)){
-                        console.log("ZXC");
-                        document.querySelector(`#main--${index[1]}`).style.display = "none";
+                    // if(inputText.value != String(newData)){
+                    //     console.log("ZXC");
+                    //     document.querySelector(`#main--${index[1]}`).style.display = "none";
+                    // }
+                    if(searchFlag){
+                        search();
                     }
                 }
             }
@@ -144,88 +148,97 @@ function deletefun(id) {
 }
 // ============================================================
 //  ========   Sort DropDown   ==================================
+function sortE(){
+    let select = document.querySelector(".sort");
+    let dropDownValue = select.value;
+    if(dropDownValue == "sort"){
+        sortFlag = false;
+    }
+
+    if(sortFlag){
+        if (dropDownValue == "A-to-Z") {
+            if (allBtnFlag) { atoz(inputValue); }
+            else if (activeBtnFlag) { atoz(activeTask); }
+            else if (completedBtnFlag) { atoz(completedTask); }
+            else { atoz(inputValue); }
+            function atoz(array) {
+                i = 0;
+                addData.innerHTML = "";
+                let asort = array.slice().sort().reverse();
+                for (let word of asort) {
+                    let sort = `${data(word)}`;
+                    addData.insertAdjacentHTML("afterbegin", sort);
+                    setId(i);
+                    if (completedTask.includes(word) && !activeBtnFlag)
+                        document.querySelector(`#check--${i}`).checked = true;
+                    i++;
+                }
+            }
+        }
+        else if (dropDownValue == "Z-to-A") {
+            if (allBtnFlag) { ztoa(inputValue); }
+            else if (activeBtnFlag) { ztoa(activeTask); }
+            else if (completedBtnFlag) { ztoa(completedTask); }
+            else { ztoa(inputValue); }
+            function ztoa(array) {
+                i = 0;
+                addData.innerHTML = "";
+                let zsort = array.slice().sort();
+                for (let word of zsort) {
+                    let sort = `${data(word)}`;
+                    addData.insertAdjacentHTML("afterbegin", sort);
+                    setId(i);
+                    if (completedTask.includes(word) && !activeBtnFlag)
+                        document.querySelector(`#check--${i}`).checked = true;
+                    i++;
+                }
+            }
+        }
+        else if (dropDownValue == "Oldest") {
+            if (allBtnFlag) { oldest(inputValue); }
+            else if (activeBtnFlag) { oldest(activeTask); }
+            else if (completedBtnFlag) { oldest(completedTask); }
+            else { oldest(inputValue); }
+            function oldest(array) {
+                i = 0;
+                addData.innerHTML = "";
+                let osort = array.slice().reverse();
+                for (let word of osort) {
+                    let sort = `${data(word)}`;
+                    addData.insertAdjacentHTML("afterbegin", sort);
+                    setId(i);
+                    if (completedTask.includes(word) && !activeBtnFlag)
+                        document.querySelector(`#check--${i}`).checked = true;
+                    i++;
+                }
+            }
+        }
+        else if (dropDownValue == "Newest") {
+            if (allBtnFlag) { newest(inputValue); }
+            else if (activeBtnFlag) { newest(activeTask); }
+            else if (completedBtnFlag) { newest(completedTask); }
+            else { newest(inputValue); }
+            function newest(array) {
+                i = 0;
+                addData.innerHTML = "";
+                for (let word of array) {
+                    let sort = `${data(word)}`;
+                    addData.insertAdjacentHTML("afterbegin", sort);
+                    setId(i);
+                    if (completedTask.includes(word) && !activeBtnFlag)
+                        document.querySelector(`#check--${i}`).checked = true;
+
+                    i++;
+                }
+            }
+        }
+    }
+}
+
 dropDownSort.addEventListener("click", function (e) {
-    let dropDownValue = e.target.value;
-
-    if (dropDownValue == "A-to-Z") {
-        if (allBtnFlag) { atoz(inputValue); }
-        else if (activeBtnFlag) { atoz(activeTask); }
-        else if (completedBtnFlag) { atoz(completedTask); }
-        else { atoz(inputValue); }
-        function atoz(array) {
-            i = 0;
-            addData.innerHTML = "";
-            let asort = array.slice().sort();
-            for (let word of asort) {
-                let sort = `${data(word)}`;
-                addData.insertAdjacentHTML("beforeend", sort);
-                setId(i);
-                if (completedTask.includes(word) && !activeBtnFlag)
-                    document.querySelector(`#check--${i}`).checked = true;
-                i++;
-            }
-        }
-        e.target.value = "sort";
-    }
-    else if (dropDownValue == "Z-to-A") {
-        if (allBtnFlag) { ztoa(inputValue); }
-        else if (activeBtnFlag) { ztoa(activeTask); }
-        else if (completedBtnFlag) { ztoa(completedTask); }
-        else { ztoa(inputValue); }
-        function ztoa(array) {
-            i = 0;
-            addData.innerHTML = "";
-            let zsort = array.slice().sort();
-            for (let word of zsort) {
-                let sort = `${data(word)}`;
-                addData.insertAdjacentHTML("afterbegin", sort);
-                setId(i);
-                if (completedTask.includes(word) && !activeBtnFlag)
-                    document.querySelector(`#check--${i}`).checked = true;
-                i++;
-            }
-        }
-        e.target.value = "sort";
-    }
-    else if (dropDownValue == "Oldest") {
-        if (allBtnFlag) { oldest(inputValue); }
-        else if (activeBtnFlag) { oldest(activeTask); }
-        else if (completedBtnFlag) { oldest(completedTask); }
-        else { oldest(inputValue); }
-        function oldest(array) {
-            i = 0;
-            addData.innerHTML = "";
-            for (let word of array) {
-                let sort = `${data(word)}`;
-                addData.insertAdjacentHTML("beforeend", sort);
-                setId(i);
-                if (completedTask.includes(word) && !activeBtnFlag)
-                    document.querySelector(`#check--${i}`).checked = true;
-                i++;
-            }
-        }
-        e.target.value = "sort";
-    }
-    else if (dropDownValue == "Newest") {
-        if (allBtnFlag) { newest(inputValue); }
-        else if (activeBtnFlag) { newest(activeTask); }
-        else if (completedBtnFlag) { newest(completedTask); }
-        else { newest(inputValue); }
-        function newest(array) {
-            i = 0;
-            addData.innerHTML = "";
-            for (let word of array) {
-                let sort = `${data(word)}`;
-                addData.insertAdjacentHTML("afterbegin", sort);
-                setId(i);
-                if (completedTask.includes(word) && !activeBtnFlag)
-                    document.querySelector(`#check--${i}`).checked = true;
-                i++;
-            }
-        }
-        e.target.value = "sort";
-    }
-
+    if(!searchFlag)
+        sortFlag = true;
+    sortE();
 });
 
 // ============================================================
@@ -233,8 +246,8 @@ dropDownSort.addEventListener("click", function (e) {
 searchbtn.addEventListener("click", function (e) {
     addFlag = false;
     searchFlag = true;
+    sortFlag = false;
 
-    addData.innerHTML = "";
     activeCss(searchbtn);
     removeCss(addbtn);
     if (searchFlag) {
@@ -252,7 +265,7 @@ searchbtn.addEventListener("click", function (e) {
 
 function search(e) {
     addData.innerHTML = "";
-    let searchText = e.target.value;
+    let searchText = inputText.value;
 
     if (allBtnFlag) {
         i = 0;
@@ -368,6 +381,7 @@ dropDownAction.addEventListener("click", function (e) {
             document.querySelector(`#check--${index[1]}`).checked = true;
             document.querySelector(`#check--${index[1]}`).addEventListener("change", btnChecked(`check--${index[1]}`));
         }
+        e.target.value = "Actions";
         // if (allBtnFlag) {
         //     completedTask = [];
         //     console.log("selectifall");
@@ -412,7 +426,7 @@ dropDownAction.addEventListener("click", function (e) {
         // //     }
 
         // // }
-        e.target.value = "Actions";
+        
     }
     else if (dropDownValue == "UnselectAll") {
         let elementId = document.querySelectorAll(`input[name="cb"]`);
@@ -421,6 +435,7 @@ dropDownAction.addEventListener("click", function (e) {
             document.querySelector(`#check--${index[1]}`).checked = false;
             document.querySelector(`#check--${index[1]}`).addEventListener("change", btnChecked(`check--${index[1]}`));
         }
+        e.target.value = "Actions";
         // if (allBtnFlag) {
         //     for (let word of inputValue) {
         //         let elementIndex = findIndex(word);
@@ -454,7 +469,7 @@ dropDownAction.addEventListener("click", function (e) {
         // //         // document.querySelector(`#check--${elementIndex}`).addEventListener("change", btnChecked(`check--${elementIndex}`));
         // //     }
         // // }
-        e.target.value = "Actions";
+       
     }
 });
 
@@ -499,7 +514,12 @@ function btnChecked(id) {
         if (allBtnFlag) {
             completedTask.push(value);
             console.log({ completedTask });
-            displayDataAfterBtn(inputValue);
+            if(searchFlag)
+                search();
+            else if(sortFlag)
+                sortE();
+            else
+                displayDataAfterBtn(inputValue);
             // addData.innerHTML = "";
             // i = 0;
             // for (let word of inputValue) {
@@ -518,7 +538,12 @@ function btnChecked(id) {
             let deleteIndex = activeTask.indexOf(value);
             activeTask.splice(deleteIndex, 1);
             console.log({ activeTask });
-            displayDataAfterBtn(activeTask);
+            if(searchFlag)
+                search();
+            else if(sortFlag)
+                sortE();
+            else
+                displayDataAfterBtn(activeTask);
             // addData.innerHTML = "";
             // i = 0;
             // for (let word of activeTask) {
@@ -531,7 +556,12 @@ function btnChecked(id) {
         else if(!completedBtnFlag) {
             completedTask.push(value);
             console.log({ completedTask });
-            displayDataAfterBtn(inputValue);
+            if(searchFlag)
+                search();
+            else if(sortFlag)
+                sortE();
+            else
+                displayDataAfterBtn(inputValue);
             // addData.innerHTML = "";
             // i = 0;
             // for (let word of inputValue) {
@@ -555,7 +585,12 @@ function btnChecked(id) {
             let deleteIndex = completedTask.indexOf(value);
             completedTask.splice(deleteIndex, 1);
             console.log({ completedTask });
-            displayDataAfterBtn(inputValue);
+            if(searchFlag)
+                search();
+            else if(sortFlag)
+                sortE();
+            else
+                displayDataAfterBtn(inputValue);
             // addData.innerHTML = "";
             // i = 0;
             // for (let word of inputValue) {
@@ -575,7 +610,12 @@ function btnChecked(id) {
             let deleteIndex = completedTask.indexOf(value);
             completedTask.splice(deleteIndex, 1);
             console.log({ completedTask });
-            displayDataAfterBtn(completedTask);
+            if(searchFlag)
+                search();
+            else if(sortFlag)
+                sortE();
+            else
+                displayDataAfterBtn(completedTask);
             // addData.innerHTML = "";
             // i = 0;
             // for (let word of completedTask) {
@@ -590,7 +630,12 @@ function btnChecked(id) {
             let deleteIndex = completedTask.indexOf(value);
             completedTask.splice(deleteIndex, 1);
             console.log({ completedTask });
-            displayDataAfterBtn(inputValue);
+            if(searchFlag)
+                search();
+            else if(sortFlag)
+                sortE();
+            else
+                displayDataAfterBtn(inputValue);
             // addData.innerHTML = "";
             // i = 0;
             // for (let word of inputValue) {
@@ -617,7 +662,12 @@ allbtn.addEventListener("click", function () {
     completedBtnFlag = false;
 
     threebtn(allbtn, completedbtn, activebtn);
-    displayDataAfterBtn(inputValue);
+    if(searchFlag)
+        search();
+    else if(sortFlag)
+        sortE();
+    else
+        displayDataAfterBtn(inputValue);
     // inputText.addEventListener("input", search);
     // addData.innerHTML = "";
     // i = 0;
@@ -701,7 +751,13 @@ activebtn.addEventListener("click", function () {
     threebtn(activebtn, completedbtn, allbtn);
     activeTask = inputValue.filter(ele => !completedTask.includes(ele));
     console.log({ activeTask });
-    displayDataAfterBtn(activeTask);
+    if(searchFlag)
+        search();
+    else if(sortFlag && !searchFlag)
+        sortE();
+    else
+        displayDataAfterBtn(activeTask);
+
     // inputText.addEventListener("input", search);
     // addData.innerHTML = "";
     // i = 0;
@@ -745,7 +801,12 @@ completedbtn.addEventListener("click", function () {
     completedBtnFlag = true;
 
     threebtn(completedbtn, allbtn, activebtn);
-    displayDataAfterBtn(completedTask);
+    if(searchFlag)
+        search();
+    else if(sortFlag && !searchFlag)
+        sortE();
+    else
+        displayDataAfterBtn(completedTask);
     // inputText.addEventListener("input", search);
     // addData.innerHTML = "";
     // i = 0;
@@ -779,7 +840,6 @@ completedbtn.addEventListener("click", function () {
     //         }
     //     });
     // }
-
 });
 
 // let elementId = document.querySelector(`.check-${i}`).id;
