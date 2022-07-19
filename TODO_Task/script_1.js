@@ -286,6 +286,10 @@ function search(e) {
         if (addData.innerHTML == "") {
             addData.insertAdjacentHTML("afterbegin", "No Data Found");
         }
+        if(inputText.value == ""){
+            displayDataAfterBtn(inputValue);
+        }
+
     }
     else if (activeBtnFlag) {
         console.log({ activeTask });
@@ -305,6 +309,9 @@ function search(e) {
         }
         if (addData.innerHTML == "") {
             addData.insertAdjacentHTML("afterbegin", "No Data Found");
+        }
+        if(inputText.value == ""){
+            displayDataAfterBtn(activeTask);
         }
     }
     else if (completedBtnFlag) {
@@ -326,6 +333,9 @@ function search(e) {
         if (addData.innerHTML == "") {
             addData.insertAdjacentHTML("afterbegin", "No Data Found");
         }
+        if(inputText.value == ""){
+            displayDataAfterBtn(completedTask);
+        }
     }
     else {
         console.log({ inputValue });
@@ -345,6 +355,9 @@ function search(e) {
         }
         if (addData.innerHTML == "") {
             addData.insertAdjacentHTML("afterbegin", "No Data Found");
+        }
+        if(inputText.value == ""){
+            displayDataAfterBtn(inputValue);
         }
     }
 }
