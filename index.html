@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
+    <script src="https://kit.fontawesome.com/0cb55e1ff6.js" crossorigin="anonymous"></script>
+    <title>Document</title>
+</head>
+
+<body>
+    <div class="container">
+        <h1 class="todo">TODO LIST</h1>
+        <input type="text" class="inputbox hidden">
+        <div class="data"></div>
+        <div class="buttons">
+            <button class="addbtn default"><img src="add.png" alt="add" class="add"></button>
+            <button class="searchbtn default"><img src="search.png" alt="search" class="search"></button>
+            <span class="verticalline">|</span>
+            <select name="Actions" class="action">
+                <option value="Actions">Actions</option>
+                <option value="Delete-Selected">Delete Selected</option>
+                <option value="SelectAll"> SelectAll</option>
+                <option value="UnselectAll"> UnselectAll</option>
+            </select>
+            <select name="Sort" class="sort">
+                <option value="sort">Sort</option>
+                <option value="A-to-Z" class="drop-down-sort">A to Z</option>
+                <option value="Z-to-A" class="drop-down-sort"> Z to A</option>
+                <option value="Oldest" class="drop-down-sort"> Oldest</option>
+                <option value="Newest" class="drop-down-sort"> Newest</option>
+            </select>
+            <div class="state">
+                <button class="allbtn default">All</button>
+                <button class="activebtn default">Active</button>
+                <button class="completedbtn default">Completed</button>
+            </div>
+        </div>
+    </div>
+    <script src="script_1.js"></script>
+</body>
+
+
+
+</html>
